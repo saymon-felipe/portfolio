@@ -8,7 +8,7 @@
         </div>
         <div class="presentation-circle">
             <div class="main-text">
-                <h1 id="hello-text" class="typed-text">Olá.</h1>
+                <h1 id="hello-text" class="typed-text" interval="7">Olá.</h1>
                 <div class="secondary-text">
                     <h2>Saymon Felipe</h2>
                     <p>Desenvolvedor full stack <br> e web designer</p>
@@ -32,6 +32,7 @@
                     <p>Dev ops</p>
                 </div>
             </div>
+            <audioManager />
         </div>
         <div class="pagination-right">
             <techMoon />
@@ -41,6 +42,7 @@
 <script>
 import techCircle from "../components/techCircle.vue";
 import techMoon from "../components/techMoon.vue";
+import audioManager from "../components/audioManager.vue";
 import { globalMethods } from "../js/globalMethods.js";
 
 export default {
@@ -51,7 +53,8 @@ export default {
     },
     components: {
         techCircle,
-        techMoon
+        techMoon,
+        audioManager
     }
 }
 </script>

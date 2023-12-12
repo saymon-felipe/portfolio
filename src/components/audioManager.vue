@@ -1,0 +1,156 @@
+<template>
+    <div class="audio-manager">
+        <div class="audio-buttons">
+            <div class="audio-button" v-on:click="toggleBackgroundAudio()">
+                <i class="fa" :class="backgroundAudio ? 'fa-volume-up' : 'fa-volume-off'"></i>
+            </div>
+            <div class="audio-button" v-on:click="toggleContainer()">
+                <i class="fas fa-cog"></i>
+            </div>
+        </div>
+        <div class="audio-manager-container" v-if="showContainer">
+            <label for="volumeRange">
+                <p>Background:</p>
+            </label>
+            <input type="range" @input="changeBackgroundVolume($event)" v-model="backgroundVolume" id="volumeRange" min="0" max="1" step="0.1" value="0.5">
+        </div>
+        <audio id="menu-hover-audio">
+            <source src="../assets/audio/menu-hover.mp3" type="audio/mp3">
+        </audio>
+        <audio id="select-audio">
+            <source src="../assets/audio/select.mp3" type="audio/mp3">
+        </audio>
+        <audio id="background-audio">
+            <source src="../assets/audio/background.mp3" type="audio/mp3">
+        </audio>
+    </div>
+</template>
+<script>
+import $ from 'jquery';
+
+export default {
+    name: "audioManager",
+    data() {
+        return {
+            showContainer: false,
+            backgroundAudio: false,
+            backgroundVolume: 0.1
+        }
+    },
+    methods: {
+        toggleContainer: function () {
+            this.showContainer = !this.showContainer;
+        },
+        playBackgroundAudio: function () {
+            this.playAudio("background-audio", this.backgroundVolume);
+        },
+        stopBackgroundAudio: function () {
+            this.stopAudio("background-audio");
+        },
+        toggleBackgroundAudio: function () {
+            this.backgroundAudio = !this.backgroundAudio;
+            this.backgroundVolume = 0.1;
+
+            if (this.backgroundAudio) {
+                this.playBackgroundAudio();
+            } else {
+                this.stopBackgroundAudio();
+            }
+        },
+        playAudio: function (audio_id, volume = 0.2) {
+            let audio = $("#" + audio_id)[0];
+            audio.currentTime = 0;
+            audio.volume = volume;
+            audio.play().catch(() => {
+                console.log("Error playing audio, please interact with the document first.");
+            });
+        },
+        stopAudio: function (audio_id) {
+            let audio = $("#" + audio_id)[0];
+            audio.pause();
+        },
+        changeBackgroundVolume: function () {
+            let audio = $("#background-audio")[0];
+            audio.volume = this.backgroundVolume;
+
+            if (audio.paused) {
+                this.playAudio("background-audio", this.backgroundVolume);
+            }
+
+            if (this.backgroundVolume == 0) {
+                this.backgroundAudio = false;
+                this.stopAudio("background-audio");
+            } else {
+                this.backgroundAudio = true;
+            }
+        }
+    },
+    mounted: function () {
+        let menuTexts = $(".menu-texts .text");
+
+        menuTexts.on("mouseenter", () => {
+            this.playAudio("menu-hover-audio", 0.5);
+        })
+
+        menuTexts.on("click", () => {
+            this.playAudio("select-audio");
+        })
+    }
+}
+</script>
+<style scoped>
+.audio-manager {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+
+.audio-buttons {
+    display: flex;
+    align-items: center;
+}
+
+.audio-button {
+    width: 50px;
+    height: 50px;
+    border: 1px solid #404040;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    margin-right: 7px;
+}
+
+.audio-button:nth-child(2) {
+    width: 40px;
+    height: 40px;
+}
+
+    .audio-button:nth-child(2) i {
+        font-size: 1em;
+        margin-left: 0;
+    }
+
+    .audio-button i {
+        color: var(--gray-high);
+        font-size: 1.5em;
+        margin-left: -2px;
+    }
+
+.audio-manager-container {
+    position: absolute;
+    bottom: 110%;
+    left: 0;
+    right: 0;
+    width: fit-content;
+    margin: auto;
+    padding: 1rem;  
+    border: 1px solid #404040;
+    border-radius: 20px;
+}
+
+    .audio-manager-container input {
+        margin-top: 10px;
+    }
+</style>

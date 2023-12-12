@@ -141,7 +141,7 @@ export default {
         width: 100%;
         height: 100%;
         border-radius: inherit;
-        box-shadow: var(--shadow-x, 0) var(--shadow-y, 0) 100px rgba(3, 199, 254, 0.4);
+        box-shadow: var(--shadow-x, 0) var(--shadow-y, 0) 100px rgba(3, 199, 254, 0.7);
     }
 
     .inner-circle img {
