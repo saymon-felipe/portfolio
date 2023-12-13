@@ -17,6 +17,7 @@
 
 h1, h2, p {
     color: var(--gray-high);
+    transition: opacity 0.4s;
 }
 
 h1 {

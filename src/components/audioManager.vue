@@ -1,5 +1,8 @@
 <template>
     <div class="audio-manager">
+        <button v-on:click="avancar()" v-if="false">
+            avançar
+        </button>
         <div class="audio-buttons">
             <div class="audio-button" v-on:click="toggleBackgroundAudio()">
                 <i class="fa" :class="backgroundAudio ? 'fa-volume-up' : 'fa-volume-off'"></i>
@@ -22,6 +25,9 @@
         </audio>
         <audio id="background-audio">
             <source src="../assets/audio/background.mp3" type="audio/mp3">
+        </audio>
+        <audio id="switch-audio">
+            <source src="../assets/audio/switch.mp3" type="audio/mp3">
         </audio>
     </div>
 </template>
@@ -83,6 +89,10 @@ export default {
             } else {
                 this.backgroundAudio = true;
             }
+        },
+        avancar: function () {
+            let element = $("#background-audio")[0];
+            element.currentTime = element.duration - 10;
         }
     },
     mounted: function () {
@@ -94,6 +104,21 @@ export default {
 
         menuTexts.on("click", () => {
             this.playAudio("select-audio");
+        })
+
+        $("#background-audio").on("ended", () => {
+            this.playAudio("background-audio");
+        })
+
+        $(".home-button").on("click", () => {
+            if ($(".home-button").hasClass("clicable")) {
+                this.playAudio("switch-audio");
+                $(".home-button").removeClass("clicable");
+            }
+        })
+
+        $(".pagination-left .circle-content, .pagination-right .circle-content").on("click", () => {
+            this.playAudio("switch-audio");
         })
     }
 }

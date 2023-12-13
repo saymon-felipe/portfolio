@@ -2,10 +2,10 @@ import $ from 'jquery';
 
 export const globalMethods = {
     methods: {
-        typeText: function (elementId, invert = false, textParam = "") {
+        typeText: function (elementId, invert = false) {
             const $element = $(`#${elementId}`);
             let animationInterval = parseInt($element.attr("interval"));
-            let textToType = textParam || $element.text();
+            let textToType = $element.attr("datatext");
             let index = 0;
 
             $element.css("width", "fit-content");
@@ -35,7 +35,7 @@ export const globalMethods = {
                     $element.css("width", 0);
                     clearInterval(intervalId);
                     setTimeout(() => {
-                        this.typeText(elementId, false, textToType);
+                        this.typeText(elementId, false);
                     }, 1500)
                 }
 
@@ -45,6 +45,27 @@ export const globalMethods = {
                     index++;
                 }
             }, 150);
+        },
+        setText: function (h1, h2 = "", p) {
+            let h1Element = $(".main-text h1");
+            let h2Element = $(".main-text h2");
+            let pElement = $(".main-text p");
+            h1Element.attr("datatext", h1);
+
+            pElement.css("opacity", 0);
+            h1Element.css("opacity", 0);
+
+            if (h2 == "") {
+                h2Element.css("opacity", 0);
+                setTimeout(() => {
+                    h2Element.hide();
+                }, 400);
+            }
+
+            setTimeout(() => {
+                h1Element.html(h1).css("opacity", 1);
+                pElement.html(p).css("opacity", 1);
+            }, 400)
         }
     },
     mounted: function() {

@@ -1,6 +1,6 @@
 <template>
     <div class="portfolio-main-page">
-        <div class="home-button">
+        <div class="home-button" v-on:click="deselectMenu(); restoreMenu()">
             <img src="../assets/img/rabsystems-icon.png">
         </div>
         <div class="pagination-left">
@@ -8,7 +8,7 @@
         </div>
         <div class="presentation-circle">
             <div class="main-text">
-                <h1 id="hello-text" class="typed-text" interval="7">Olá.</h1>
+                <h1 id="principal-text" class="typed-text" interval="7" datatext="Olá.">Olá.</h1>
                 <div class="secondary-text">
                     <h2>Saymon Felipe</h2>
                     <p>Desenvolvedor full stack <br> e web designer</p>
@@ -16,19 +16,19 @@
             </div>
             <techCircle />
             <div class="menu-texts">
-                <div class="text">
+                <div class="text" v-on:click="selectMenu(1)">
                     <p>UX/UI</p>
                 </div>
-                <div class="text">
+                <div class="text" v-on:click="selectMenu(2)">
                     <p>Front end</p>
                 </div>
-                <div class="text">
+                <div class="text" v-on:click="selectMenu(3)">
                     <p>Back end</p>
                 </div>
-                <div class="text">
+                <div class="text" v-on:click="selectMenu(4)">
                     <p>Database</p>
                 </div>
-                <div class="text">
+                <div class="text" v-on:click="selectMenu(5)">
                     <p>Dev ops</p>
                 </div>
             </div>
@@ -44,12 +44,120 @@ import techCircle from "../components/techCircle.vue";
 import techMoon from "../components/techMoon.vue";
 import audioManager from "../components/audioManager.vue";
 import { globalMethods } from "../js/globalMethods.js";
+import $ from 'jquery';
+import gsap from 'gsap';
 
 export default {
     name: "mainPage",
     mixins: [globalMethods],
+    methods: {
+        selectMenu: function (index) {
+            this.deselectMenu();
+            
+            $(".menu-texts").addClass("selected-menu");
+            $(`.menu-texts .text:nth-child(${index})`).addClass("selected");
+
+            this.rollMenuToTop();
+            this.hideInicialPhoto();
+
+            switch (index) {
+                case 1:
+                    this.setText("UX/UI", "", "Design intuitivo que cativa e simplifica interações.");
+                    break;
+                case 2:
+                    this.setText("Front end", "", "Transformando ideias em experiências visuais interativas.");
+                    break;
+                case 3:
+                    this.setText("Back end", "", "Potencializando a funcionalidade por trás das telas.");
+                    break;
+                case 4:
+                    this.setText("Database", "", "Armazenando, organizando e gerenciando informações.");
+                    break;
+                case 5:
+                    this.setText("Dev ops", "", "Integração contínua, entrega rápida, colaboração eficiente.");
+                    break;
+            }
+        },
+        hideInicialPhoto: function () {
+            let photo = $(".inner-circle img");
+            photo.animate({ opacity: 0 }, 500, () => {
+                photo.hide();
+            })
+        },
+        showInicialPhoto: function () {
+            let photo = $(".inner-circle img");
+            photo.show();
+            setTimeout(() => {
+                photo.animate({ opacity: 1 }, 500)
+            }, 1)
+        },
+        restoreMenu: function () {
+            const menu = $(".menu-texts");
+            const menuItems = $('.text');
+
+            if (!$(".home-button").hasClass("clicable")) return;
+
+            this.setText("Olá.", "", "Desenvolvedor full stack e web designer");
+            this.showInicialPhoto();
+
+            // Defina as posições iniciais
+            const initialPositions = [
+                { marginLeft: '-17%' },
+                { marginLeft: '-7%' },
+                { marginLeft: 0 },  // O terceiro item não será afetado pela animação de margem
+                { marginLeft: '-7%' },
+                { marginLeft: '-17%' },
+            ];
+
+            gsap.to(menu, {
+                x: '0',
+                y: '0',
+                duration: 0.5
+            });
+
+            setTimeout(() => {
+                gsap.to(menuItems, {
+                    marginLeft: function(index) {
+                        return initialPositions[index].marginLeft;
+                    },
+                    textAlign: 'left',
+                    marginTop: '0',
+                    duration: 0.5,
+                    stagger:  0.05
+                });
+            }, 200)
+            
+        },
+        rollMenuToTop: function () {
+            const menu = $(".menu-texts");
+            const menuItems = $('.text');
+            $(".home-button").addClass("clicable");
+
+            gsap.to(menu, {
+                x: '-7vw',
+                y: '-30vh',
+                duration: 0.4
+            });
+
+            setTimeout(() => {
+                gsap.to(menuItems, {
+                    marginLeft: function(index) {
+                        return (index * 120) + 'px';
+                    },
+                    textAlign: 'center',
+                    marginTop: '-55px',
+                    duration: 0.5,
+                    stagger: 0.05,  // Espaçamento entre os elementos (ajuste conforme necessário)
+                });
+            }, 200)
+        },
+        deselectMenu: function () {
+            $(".menu-texts .text").removeClass("selected");
+            $(".menu-texts").removeClass("selected-menu");
+        }
+    },
     mounted: function () {
-        this.typeText("hello-text");
+        this.typeText("principal-text");
     },
     components: {
         techCircle,
@@ -135,6 +243,10 @@ export default {
     text-shadow: 3px 3px 7px rgba(0, 0, 0, 1);
 }
 
+.main-text p {
+    max-width: 260px;
+}
+
 .secondary-text {
     position: relative;
     padding-left: 63px;
@@ -159,13 +271,16 @@ export default {
     bottom: 0;
     right: -3rem;
     margin: auto;
+    transition: all 0.5s ease-in-out;
+    z-index: 5;
 }
 
     .menu-texts .text {
         margin: 2rem 0;
         width: 90px;
+        height: 24px;
         cursor: pointer;
-        transition: transform 0.4s;
+        transition: transform 0.4s ease-in-out;
     }
 
         .menu-texts .text:hover {
@@ -203,5 +318,8 @@ export default {
     50% {
         border-color: #333;
     }
+}
+
+.selected-menu {
 }
 </style>

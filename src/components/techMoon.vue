@@ -27,6 +27,7 @@ export default {
     align-items: center;
     justify-content: center;
     animation: rotate 60s infinite ease-in-out;
+    transform: rotate(360deg);
 }
 
     .tech-moon img {
@@ -35,11 +36,11 @@ export default {
 
 @keyframes rotate {
     0% {
-        transform: rotate(0);
+        transform: rotate(360deg);
     }
 
     100% {
-        transform: rotate(360deg);
+        transform: rotate(0);
     }
 }
 
@@ -86,20 +87,6 @@ export default {
 @keyframes rotateCircleLine {
     to {
         transform: rotate(-20deg);
-    }
-}
-
-.line {
-    fill: none;
-    stroke: #fff; /* Branco para a linha */
-    stroke-width: 5;
-    stroke-dasharray: 50 200; /* Define o comprimento visível (50) e o espaçamento total (200) */
-    animation: moveLine 4s linear infinite;
-}
-
-@keyframes rotateLine {
-    to {
-        stroke-dashoffset: -150; /* Move a linha ao longo da circunferência */
     }
 }
 
