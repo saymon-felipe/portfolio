@@ -6,7 +6,7 @@
         </svg>
         <div class="circle-content">
             <div class="inner-circle" ref="dynamicShadow" @click="toggleBounce" :class="{ 'active': isBouncing }">
-                <img src="../assets/img/saymon-foto.png" alt="Saymon Felipe">
+                <img src="../assets/img/saymon-foto.png" alt="Saymon Felipe" id="profile-photo">
             </div>
         </div>
     </div>
@@ -55,8 +55,8 @@ export default {
 
 .tech-circle-container {
     position: relative;
-    width: calc(16rem + 32vw);
-    height: calc(16rem + 32vw);
+    width: calc(14rem + 28vw);
+    height: calc(14rem + 28vw);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -128,6 +128,18 @@ export default {
     box-shadow: inset 5px 10px 16px rgba(0, 0, 0, 0.8);
     position: relative;
     animation: none;
+}
+
+@media (max-width: 1050px) {
+    .tech-circle-container {
+        width: calc(10rem + 18vw);
+        height: calc(10rem + 18vw);
+    }
+
+    .inner-circle {
+        width: calc(5rem + 9vw);
+        height: calc(5rem + 9vw);
+    }
 }
 
 .inner-circle.active {

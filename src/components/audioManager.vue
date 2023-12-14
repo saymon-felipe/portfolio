@@ -29,13 +29,18 @@
         <audio id="switch-audio">
             <source src="../assets/audio/switch.mp3" type="audio/mp3">
         </audio>
+        <audio id="type-audio">
+            <source src="../assets/audio/type.mp3" type="audio/mp3">
+        </audio>
     </div>
 </template>
 <script>
 import $ from 'jquery';
+import { globalMethods } from "../js/globalMethods.js";
 
 export default {
     name: "audioManager",
+    mixins: [globalMethods],
     data() {
         return {
             showContainer: false,
@@ -63,14 +68,6 @@ export default {
                 this.stopBackgroundAudio();
             }
         },
-        playAudio: function (audio_id, volume = 0.2) {
-            let audio = $("#" + audio_id)[0];
-            audio.currentTime = 0;
-            audio.volume = volume;
-            audio.play().catch(() => {
-                console.log("Error playing audio, please interact with the document first.");
-            });
-        },
         stopAudio: function (audio_id) {
             let audio = $("#" + audio_id)[0];
             audio.pause();
@@ -96,13 +93,14 @@ export default {
         }
     },
     mounted: function () {
-        let menuTexts = $(".menu-texts .text");
+        let clickElements = $(".click-audio");
+        let overElements = $(".hover-audio");
 
-        menuTexts.on("mouseenter", () => {
+        overElements.on("mouseenter", () => {
             this.playAudio("menu-hover-audio", 0.5);
         })
 
-        menuTexts.on("click", () => {
+        clickElements.on("click", () => {
             this.playAudio("select-audio");
         })
 
@@ -173,6 +171,8 @@ export default {
     padding: 1rem;  
     border: 1px solid #404040;
     border-radius: 20px;
+    background: var(--black);
+    z-index: 6;
 }
 
     .audio-manager-container input {

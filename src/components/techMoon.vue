@@ -116,4 +116,21 @@ export default {
         border-radius: 50%;
     }
 
+@media (max-width: 1050px) {
+    .tech-moon-container {
+        width: calc(6rem + 15vw);
+        height: calc(6rem + 15vw);
+    }
+
+    .inner-circle {
+        width: calc(3rem + 8vw);
+        height: calc(3rem + 8vw);
+    }
+
+        .inner-circle:hover {
+            width: calc(3.4rem + 8vw);
+            height: calc(3.4rem + 8vw);
+        }
+}
+
 </style>

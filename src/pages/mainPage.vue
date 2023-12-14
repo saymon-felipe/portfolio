@@ -1,6 +1,6 @@
 <template>
     <div class="portfolio-main-page">
-        <div class="home-button" v-on:click="deselectMenu(); restoreMenu()">
+        <div class="home-button" v-on:click="restoreMenu()">
             <img src="../assets/img/rabsystems-icon.png">
         </div>
         <div class="pagination-left">
@@ -11,24 +11,28 @@
                 <h1 id="principal-text" class="typed-text" interval="7" datatext="Olá.">Olá.</h1>
                 <div class="secondary-text">
                     <h2>Saymon Felipe</h2>
-                    <p>Desenvolvedor full stack <br> e web designer</p>
+                    <p>Desenvolvedor full stack e web designer</p>
                 </div>
+            </div>
+            <lottie-player id="click" class="click-audio" background="transparent" speed="1" loop autoplay v-on:click="showHabilitiesModal()"></lottie-player>
+            <div class="habilities-container">
+                <habilitiesComponent :type="habilities" />
             </div>
             <techCircle />
             <div class="menu-texts">
-                <div class="text" v-on:click="selectMenu(1)">
+                <div class="text hover-audio click-audio" v-on:click="selectMenu(1)">
                     <p>UX/UI</p>
                 </div>
-                <div class="text" v-on:click="selectMenu(2)">
+                <div class="text hover-audio click-audio" v-on:click="selectMenu(2)">
                     <p>Front end</p>
                 </div>
-                <div class="text" v-on:click="selectMenu(3)">
+                <div class="text hover-audio click-audio" v-on:click="selectMenu(3)">
                     <p>Back end</p>
                 </div>
-                <div class="text" v-on:click="selectMenu(4)">
+                <div class="text hover-audio click-audio" v-on:click="selectMenu(4)">
                     <p>Database</p>
                 </div>
-                <div class="text" v-on:click="selectMenu(5)">
+                <div class="text hover-audio click-audio" v-on:click="selectMenu(5)">
                     <p>Dev ops</p>
                 </div>
             </div>
@@ -37,12 +41,19 @@
         <div class="pagination-right">
             <techMoon />
         </div>
+        <modal v-if="showModal" :modaltitle="modalTitle" :modaltext="modalText" :modalicon="modalIcon" :modalclosebutton="modalCloseButton" :withanimation="withAnimation" @saveModal="initiateFullScreen($event)" @closeModal="hideModal()">
+            <responsiveHabilitiesComponent :type="habilities" v-if="habilities != ''" />
+        </modal>
     </div>
 </template>
 <script>
 import techCircle from "../components/techCircle.vue";
 import techMoon from "../components/techMoon.vue";
 import audioManager from "../components/audioManager.vue";
+import modal from "../components/modal.vue";
+import responsiveHabilitiesComponent from "../components/responsiveHabilitiesComponent.vue";
+import habilitiesComponent from "../components/habilitiesComponent.vue";
+import clickJson from "../assets/animations/click.json";
 import { globalMethods } from "../js/globalMethods.js";
 import $ from 'jquery';
 import gsap from 'gsap';
@@ -50,61 +61,129 @@ import gsap from 'gsap';
 export default {
     name: "mainPage",
     mixins: [globalMethods],
+    data() {
+        return {
+            habilities: ""
+        }
+    },
     methods: {
         selectMenu: function (index) {
-            this.deselectMenu();
+            $(".menu-texts .text").removeClass("selected");
+            $(".menu-texts").removeClass("selected-menu");
             
             $(".menu-texts").addClass("selected-menu");
             $(`.menu-texts .text:nth-child(${index})`).addClass("selected");
 
-            this.rollMenuToTop();
-            this.hideInicialPhoto();
+            this.hideHabilitiesContainer().then(() => {
+                switch (index) {
+                    case 1:
+                        this.setText("UX/UI", "", "Design intuitivo que cativa e simplifica interações.");
+                        this.habilities = "ux";
+                        break;
+                    case 2:
+                        this.setText("Front end", "", "Transformando ideias em experiências visuais interativas.");
+                        this.habilities = "front";
+                        break;
+                    case 3:
+                        this.setText("Back end", "", "Potencializando a funcionalidade por trás das telas.");
+                        this.habilities = "back";
+                        break;
+                    case 4:
+                        this.setText("Database", "", "Armazenando, organizando e gerenciando informações.");
+                        this.habilities = "db";
+                        break;
+                    case 5:
+                        this.setText("Dev ops", "", "Integração contínua, entrega rápida, colaboração eficiente.");
+                        this.habilities = "dev";
+                        break;
+                }
 
-            switch (index) {
-                case 1:
-                    this.setText("UX/UI", "", "Design intuitivo que cativa e simplifica interações.");
-                    break;
-                case 2:
-                    this.setText("Front end", "", "Transformando ideias em experiências visuais interativas.");
-                    break;
-                case 3:
-                    this.setText("Back end", "", "Potencializando a funcionalidade por trás das telas.");
-                    break;
-                case 4:
-                    this.setText("Database", "", "Armazenando, organizando e gerenciando informações.");
-                    break;
-                case 5:
-                    this.setText("Dev ops", "", "Integração contínua, entrega rápida, colaboração eficiente.");
-                    break;
-            }
+                this.rollMenuToTop();
+            });
+        },
+        hideHabilitiesContainer: function () {
+            return new Promise((resolve) => {
+                const habilitiesComponent = $(".habilities-container");
+
+                habilitiesComponent.css("opacity", 0);
+
+                setTimeout(() => {
+                    habilitiesComponent.hide();
+                    resolve();
+                }, 400)   
+            }) 
+        },
+        showHabilitiesContainer: function () {
+            const habilitiesComponent = $(".habilities-container");
+
+            habilitiesComponent.show();
+
+            setTimeout(() => {
+                habilitiesComponent.css("opacity", 1);
+            }, 1)
         },
         hideInicialPhoto: function () {
-            let photo = $(".inner-circle img");
+            let photo = $("#profile-photo");
             photo.animate({ opacity: 0 }, 500, () => {
                 photo.hide();
             })
         },
         showInicialPhoto: function () {
-            let photo = $(".inner-circle img");
+            let photo = $("#profile-photo");
             photo.show();
             setTimeout(() => {
                 photo.animate({ opacity: 1 }, 500)
             }, 1)
         },
+        hideClickAnimation: function () {
+            return new Promise((resolve) => {
+                const clickAnimation = $("#click");
+
+                clickAnimation.css("opacity", 0);
+                setTimeout(() => {
+                    clickAnimation.hide();
+                    resolve();
+                }, 400)
+            })
+        },
+        showClickAnimation: function () {
+            return new Promise((resolve) => {
+                const clickAnimation = $("#click");
+
+                clickAnimation.show();
+                
+                setTimeout(() => {
+                    clickAnimation.css("opacity", 1);
+                    resolve();
+                }, 400)
+            })
+        },
         restoreMenu: function () {
             const menu = $(".menu-texts");
             const menuItems = $('.text');
+            const innerCircle = $(".tech-circle-container .inner-circle");
 
             if (!$(".home-button").hasClass("clicable")) return;
 
-            this.setText("Olá.", "", "Desenvolvedor full stack e web designer");
+            this.setText("Olá.", "Saymon Felipe", "Desenvolvedor full stack e web designer");
             this.showInicialPhoto();
 
-            // Defina as posições iniciais
+            this.hideClickAnimation().then(() => {
+                this.habilities = "";
+            })
+
+            this.hideHabilitiesContainer().then(() => {
+                gsap.to(innerCircle, { //Retornar a escala do circulo central para 1
+                    scale: '1',
+                    duration: 0.4
+                });
+            });
+
+            //Posições iniciais dos itens do menu
             const initialPositions = [
                 { marginLeft: '-17%' },
                 { marginLeft: '-7%' },
-                { marginLeft: 0 },  // O terceiro item não será afetado pela animação de margem
+                { marginLeft: 0 },
                 { marginLeft: '-7%' },
                 { marginLeft: '-17%' },
             ];
@@ -125,44 +204,81 @@ export default {
                     duration: 0.5,
                     stagger:  0.05
                 });
-            }, 200)
-            
+            }, 200)            
         },
         rollMenuToTop: function () {
             const menu = $(".menu-texts");
             const menuItems = $('.text');
+            const innerCircle = $(".tech-circle-container .inner-circle");
+
             $(".home-button").addClass("clicable");
 
-            gsap.to(menu, {
-                x: '-7vw',
-                y: '-30vh',
-                duration: 0.4
-            });
+            this.hideInicialPhoto();
 
-            setTimeout(() => {
-                gsap.to(menuItems, {
-                    marginLeft: function(index) {
-                        return (index * 120) + 'px';
-                    },
-                    textAlign: 'center',
-                    marginTop: '-55px',
-                    duration: 0.5,
-                    stagger: 0.05,  // Espaçamento entre os elementos (ajuste conforme necessário)
+            if ($(window).width() < 1050) {
+                gsap.to(menu, {
+                    x: '50%',
+                    duration: 0.4
                 });
-            }, 200)
+
+                gsap.to(menuItems, {
+                    marginLeft: '-17%',
+                    duration: 0.5,
+                    stagger: 0.05
+                });
+
+                this.showClickAnimation();
+            } else {
+                gsap.to(menu, {
+                    x: '-7.8vw',
+                    y: '-30vh',
+                    duration: 0.4
+                });
+
+                setTimeout(() => {
+                    gsap.to(menuItems, {
+                        marginLeft: function(index) {
+                            return (index * 120) + 'px';
+                        },
+                        textAlign: 'center',
+                        marginTop: '-55px',
+                        duration: 0.5,
+                        stagger: 0.05
+                    });
+
+                    gsap.to(innerCircle, {
+                        scale: '1.3',
+                        duration: 0.4,
+                        onComplete: () => {
+                            this.showHabilitiesContainer();
+                        }
+                    });
+                }, 200)
+            }
         },
-        deselectMenu: function () {
-            $(".menu-texts .text").removeClass("selected");
-            $(".menu-texts").removeClass("selected-menu");
+        showHabilitiesModal: function () {
+            this.fillModalVariables("", "Essas são minhas habilidades nessa categoria", "", true);
         }
     },
     mounted: function () {
         this.typeText("principal-text");
+
+        const player = document.querySelector("#click");
+        player.addEventListener("rendered", () => {
+            player.load(
+                clickJson
+            );
+        });
+
+        this.initEventListeners();
     },
     components: {
         techCircle,
         techMoon,
-        audioManager
+        audioManager,
+        modal,
+        responsiveHabilitiesComponent,
+        habilitiesComponent
     }
 }
 </script>
@@ -224,19 +340,11 @@ export default {
 .main-text {
     position: absolute;
     top: 0;
-    left: -23%;
+    left: -30%;
     bottom: 0;
     margin: auto;
-    z-index: 5;
+    z-index: 7;
     height: fit-content;
-}
-
-@media (max-width: 1550px) {
-    .main-text {
-        top: 10%;
-        bottom: initial;
-        margin: initial;
-    }
 }
 
 .main-text h1, .main-text h2, .main-text p {
@@ -269,7 +377,7 @@ export default {
     position: absolute;
     top: 0;
     bottom: 0;
-    right: -3rem;
+    right: calc(-1rem - 3vw);
     margin: auto;
     transition: all 0.5s ease-in-out;
     z-index: 5;
@@ -303,6 +411,34 @@ export default {
         margin-left: -17%;
     }
 
+@media (max-width: 1050px) {
+
+    .pagination-left {
+        left: calc(-3rem - 9vw);
+    }
+
+    .pagination-right {
+        right: calc(-3rem - 9vw);
+    }
+
+    .main-text {
+        left: -55%;
+    }
+
+    .main-text p {
+        max-width: 200px !important;
+    }
+
+    .menu-texts {
+        right: calc(-1rem - 7vw);
+    }
+
+        .menu-texts .text {
+            margin-top: 0.7rem;
+            margin-bottom: 0.7rem;
+        }
+    }
+
 .typed-text {
     white-space: nowrap;
     overflow: hidden;
@@ -320,6 +456,43 @@ export default {
     }
 }
 
-.selected-menu {
+#click {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    z-index: 6;
+    transition: opacity 0.4s;
+    opacity: 0;
+    display: none;
+    cursor: pointer;
+}
+
+@media (max-width: 1050px) {
+
+    #click {
+        width: calc(5rem + 9vw);
+        height: calc(5rem + 9vw);
+    }
+}
+
+.habilities-container {
+    transition: opacity 0.4s;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    /*display: flex;*/
+    display: none;
+    opacity: 0;
+    align-items: center;
+    justify-content: center;
+    z-index: 6;
+    width: fit-content;
+    height: fit-content;
 }
 </style>
