@@ -41,6 +41,7 @@
         <div class="pagination-right">
             <techMoon />
         </div>
+        <footerComponent @changeMenu="changePageContent($event)" />
         <modal v-if="showModal" :modaltitle="modalTitle" :modaltext="modalText" :modalicon="modalIcon" :modalclosebutton="modalCloseButton" :withanimation="withAnimation" @saveModal="initiateFullScreen($event)" @closeModal="hideModal()">
             <responsiveHabilitiesComponent :type="habilities" v-if="habilities != ''" />
         </modal>
@@ -53,6 +54,7 @@ import audioManager from "../components/audioManager.vue";
 import modal from "../components/modal.vue";
 import responsiveHabilitiesComponent from "../components/responsiveHabilitiesComponent.vue";
 import habilitiesComponent from "../components/habilitiesComponent.vue";
+import footerComponent from "../components/footerComponent.vue";
 import clickJson from "../assets/animations/click.json";
 import { globalMethods } from "../js/globalMethods.js";
 import $ from 'jquery';
@@ -67,6 +69,9 @@ export default {
         }
     },
     methods: {
+        changePageContent: function (event) {
+            console.log(event);  
+        },
         selectMenu: function (index) {
             $(".menu-texts .text").removeClass("selected");
             $(".menu-texts").removeClass("selected-menu");
@@ -278,7 +283,8 @@ export default {
         audioManager,
         modal,
         responsiveHabilitiesComponent,
-        habilitiesComponent
+        habilitiesComponent,
+        footerComponent
     }
 }
 </script>

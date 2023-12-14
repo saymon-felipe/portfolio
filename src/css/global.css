@@ -20,6 +20,19 @@ h1, h2, p {
     transition: opacity 0.4s;
 }
 
+.small {
+    font-size: .7em !important;
+}
+
+a {
+    color: var(--gray-high);
+    text-decoration: none;
+}
+
+    a:hover {
+        text-decoration: underline;
+    }
+
 h1 {
     font-size: 4.2em;
     margin-bottom: .7rem;
