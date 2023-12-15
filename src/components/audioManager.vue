@@ -11,6 +11,7 @@
                 <i class="fas fa-cog"></i>
             </div>
         </div>
+        <div class="audio-manager-wrapper" v-on:click="toggleContainer()" v-if="showContainer"></div>
         <div class="audio-manager-container" v-if="showContainer">
             <label for="volumeRange">
                 <p>Background:</p>
@@ -173,9 +174,35 @@ export default {
     border-radius: 20px;
     background: var(--black);
     z-index: 6;
+    width: fit-content;
+    height: fit-content;
 }
 
     .audio-manager-container input {
         margin-top: 10px;
     }
+
+.audio-manager-wrapper {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: transparent;
+    z-index: 5;
+}
+
+@media (max-width: 1050px) {
+    .audio-manager {
+        top: -3vh;
+        transform: translateX(5vw);
+        height: fit-content;
+        z-index: 6;
+    }
+
+    .audio-manager-container {
+        bottom: 0;
+        top: 193%;
+    }
+}
 </style>

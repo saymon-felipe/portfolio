@@ -7,9 +7,9 @@
         <p id="modal-text" :datatext="modaltext" interval="5" speed="50">{{ modaltext }}</p>
         <i id="fullscreen-icon" class="animate__animated animate__pulse animate__infinite infinite" :class="modalicon" v-on:click="submitModal()"></i>
         <div class="animation-container">
-            <lottie-player id="rotate-phone" class="click-audio" background="transparent" speed="1" loop autoplay></lottie-player>
+            <lottie-player id="rotate-phone" background="transparent" speed="1" loop autoplay></lottie-player>
         </div>
-        <div class="slot-container" v-if="!withanimation">
+        <div class="slot-container">
             <slot></slot>
         </div>
     </div>
@@ -45,6 +45,12 @@ export default {
                 $(".animation-container").css("display", "flex");
             }
         });
+
+        if ($("#fullscreen-icon").hasClass("fas")) {
+            $(".slot-container").hide();
+        } else {
+            $(".slot-container").show();
+        }
     }
 }
 </script>

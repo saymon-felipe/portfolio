@@ -98,24 +98,27 @@ export const globalMethods = {
         },
         //Funções modal
         fillModalVariables: function (main_text, complementary_text, modal_icon, allow_close = false, with_animation = false) {
-            this.hideModal();
-
-            setTimeout(() => {
+            this.hideModal().then(() => {
                 this.showModal = true;
                 this.modalCloseButton = allow_close;
                 this.modalTitle = main_text;
                 this.modalText = complementary_text;
                 this.modalIcon = modal_icon;
                 this.withAnimation = with_animation;
-            }, 10)
+            });
         },
         hideModal: function () {
-            this.showModal = false;
-            this.modalCloseButton = false;
-            this.modalTitle = "";
-            this.modalText = "";
-            this.modalIcon = "";
-            this.withAnimation = false;
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    this.showModal = false;
+                    this.modalCloseButton = false;
+                    this.modalTitle = "";
+                    this.modalText = "";
+                    this.modalIcon = "";
+                    this.withAnimation = false;
+                    resolve();
+                }, 100)
+            })
         },
         //Funções nativas android
         checkIfDeviceIsInPortraitMode: function() {
@@ -146,22 +149,35 @@ export const globalMethods = {
         requestFullScreen: function () {
             this.fillModalVariables("Tela cheia", "Está página funciona melhor em tela cheia", "fas fa-expand-arrows-alt");
         },
+        checkIfIsFullScreen: function () {
+            let isFullScreen = document.fullscreenElement || document.mozFullScreenElement || document.webkitFullscreenElement || document.msFullscreenElement;
+
+            if (this.isMobileDevice() && isFullScreen) {
+                return true;
+            }
+            return false;
+        },
         handleFullscreenChange: function () {
-            if (this.isMobileDevice() && !(document.fullscreenElement || document.mozFullScreenElement || document.webkitFullscreenElement || document.msFullscreenElement)) {
+            if (!this.checkIfIsFullScreen()) {
                 this.requestFullScreen();
             } else {
+                console.log(this.checkIfDeviceIsInPortraitMode())
                 if (this.checkIfDeviceIsInPortraitMode()) {
                     this.fillModalVariables("Vire o dispositivo", "Por favor gire seu celular para ficar em modo paisagem", "", false, true);
+                } else {
+                    this.hideModal();
                 }
             }
         },
         //Funções de controle de orientação
         handleOrientationChange: function () {
-            if (!this.checkIfDeviceIsInPortraitMode()) {
-                this.fillModalVariables("Vire o dispositivo", "Por favor gire seu celular para ficar em modo paisagem", "", false, true);
-            } else {
-                this.hideModal();
-            }
+            setTimeout(() => {
+                if (this.checkIfDeviceIsInPortraitMode()) {
+                    this.fillModalVariables("Vire o dispositivo", "Por favor gire seu celular para ficar em modo paisagem", "", false, true);
+                } else {
+                    this.handleFullscreenChange();
+                }
+            }, 10)
         },
         initEventListeners: function () {
             this.handleFullscreenChange();

@@ -43,7 +43,7 @@
         </div>
         <footerComponent @changeMenu="changePageContent($event)" />
         <modal v-if="showModal" :modaltitle="modalTitle" :modaltext="modalText" :modalicon="modalIcon" :modalclosebutton="modalCloseButton" :withanimation="withAnimation" @saveModal="initiateFullScreen($event)" @closeModal="hideModal()">
-            <responsiveHabilitiesComponent :type="habilities" v-if="habilities != ''" />
+            <responsiveHabilitiesComponent :type="habilities" v-if="!withAnimation" />
         </modal>
     </div>
 </template>
@@ -341,6 +341,7 @@ export default {
     right: 0;
     margin: auto;
     top: 4vh;
+    z-index: 6;
 }
 
 .main-text {

@@ -44,6 +44,10 @@ h2 {
     margin-bottom: .7rem;
 }
 
+p, a {
+    font-size: 1.2rem;
+}
+
 @media (max-width: 1050px) {
     h1 {
         font-size: 3.2em;
@@ -52,6 +56,10 @@ h2 {
     
     h2 {
         font-size: 1em;
+    }
+
+    p, a {
+        font-size: .9rem !important;
     }
 }
 
