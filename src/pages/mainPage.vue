@@ -283,6 +283,12 @@ export default {
                         break;
                 }
 
+                if (this.isMobileDevice()) {
+                    this.hideClickAnimation().then(() => {
+                        this.showClickAnimation();
+                    });
+                }
+
                 this.rollMenuToTop();
             });
         },
