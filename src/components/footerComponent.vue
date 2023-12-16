@@ -29,6 +29,11 @@ import $ from 'jquery';
 export default {
     name: "footerComponent",
     props: ["menuselected"],
+    watch: {
+        menuselected: function () {
+            this.selectThisMenu(this.menuselected);
+        }
+    },
     methods: {
         selectThisMenu: function (menu_number) {
             $(".navigation-menu li").removeClass("main-menu-active-item");

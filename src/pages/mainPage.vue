@@ -622,7 +622,7 @@ export default {
     }
 
     .menu-texts {
-        right: calc(-1rem - 7vw);
+        right: calc(-2rem - 7vw);
     }
 
         .menu-texts .text {
