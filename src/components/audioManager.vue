@@ -127,6 +127,10 @@ export default {
                 this.playAudio("switch-audio");
             }
         })
+
+        $(".navigation-menu li").on("click", () => {
+            this.playAudio("switch-audio");
+        })
     }
 }
 </script>
@@ -135,6 +139,7 @@ export default {
     position: absolute;
     right: 0;
     bottom: 0;
+
 }
 
 .audio-buttons {

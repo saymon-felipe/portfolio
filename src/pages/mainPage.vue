@@ -14,29 +14,37 @@
                     <p>Desenvolvedor full stack e web designer</p>
                 </div>
             </div>
-            <lottie-player id="click" class="click-audio" background="transparent" speed="1" loop autoplay v-on:click="showHabilitiesModal()"></lottie-player>
-            <div class="habilities-container">
-                <habilitiesComponent :type="habilities" />
+            <div class="home-content">
+                <lottie-player id="click" class="click-audio" background="transparent" speed="1" loop autoplay v-on:click="showHabilitiesModal()"></lottie-player>
+                <div class="habilities-container">
+                    <habilitiesComponent :type="habilities" />
+                </div>
+                <techCircle />
+                <div class="menu-texts">
+                    <div class="text hover-audio click-audio" v-on:click="selectMenu(1)">
+                        <p>UX/UI</p>
+                    </div>
+                    <div class="text hover-audio click-audio" v-on:click="selectMenu(2)">
+                        <p>Front end</p>
+                    </div>
+                    <div class="text hover-audio click-audio" v-on:click="selectMenu(3)">
+                        <p>Back end</p>
+                    </div>
+                    <div class="text hover-audio click-audio" v-on:click="selectMenu(4)">
+                        <p>Database</p>
+                    </div>
+                    <div class="text hover-audio click-audio" v-on:click="selectMenu(5)">
+                        <p>Dev ops</p>
+                    </div>
+                </div>
+                <audioManager />
             </div>
-            <techCircle />
-            <div class="menu-texts">
-                <div class="text hover-audio click-audio" v-on:click="selectMenu(1)">
-                    <p>UX/UI</p>
-                </div>
-                <div class="text hover-audio click-audio" v-on:click="selectMenu(2)">
-                    <p>Front end</p>
-                </div>
-                <div class="text hover-audio click-audio" v-on:click="selectMenu(3)">
-                    <p>Back end</p>
-                </div>
-                <div class="text hover-audio click-audio" v-on:click="selectMenu(4)">
-                    <p>Database</p>
-                </div>
-                <div class="text hover-audio click-audio" v-on:click="selectMenu(5)">
-                    <p>Dev ops</p>
-                </div>
+            <div class="projects-content">
+                <projectsComponent />
             </div>
-            <audioManager />
+            <div class="contact-content">
+                <contactComponent />
+            </div>
         </div>
         <div class="pagination-right" v-on:click="advanceScroll()">
             <techMoon />
@@ -55,6 +63,8 @@ import modal from "../components/modal.vue";
 import responsiveHabilitiesComponent from "../components/responsiveHabilitiesComponent.vue";
 import habilitiesComponent from "../components/habilitiesComponent.vue";
 import footerComponent from "../components/footerComponent.vue";
+import projectsComponent from "../components/projectsComponent.vue";
+import contactComponent from "../components/contactComponent.vue";
 import clickJson from "../assets/animations/click.json";
 import { globalMethods } from "../js/globalMethods.js";
 import $ from 'jquery';
@@ -188,19 +198,55 @@ export default {
             }
         },
         slideFirstContentToLeft: function () {
-            const presentationCircle = $(".presentation-circle");
+            const homeContent = $(".home-content");
 
-            gsap.to(presentationCircle, {
+            gsap.to(homeContent, {
                 x: '-100vw',
                 duration: 1,
                 ease: "ease-in-out"
             });
         },
         slideFirstContentToRight: function () {
-            const presentationCircle = $(".presentation-circle");
+            const homeContent = $(".home-content");
 
-            gsap.to(presentationCircle, {
+            gsap.to(homeContent, {
                 x: '0',
+                duration: 1,
+                ease: "ease-in-out"
+            });
+        },
+        slideSecondContentToLeft: function (moreLeft = false) {
+            const homeContent = $(".projects-content");
+
+            gsap.to(homeContent, {
+                x: moreLeft ? '-100vw' : '0',
+                duration: 1,
+                ease: "ease-in-out"
+            });
+        },
+        slideSecondContentToRight: function (zeroPosition = false) {
+            const homeContent = $(".projects-content");
+
+            gsap.to(homeContent, {
+                x: zeroPosition ? 0 : '100vw',
+                duration: 1,
+                ease: "ease-in-out"
+            });
+        },
+        slideThirdContentToLeft: function () {
+            const homeContent = $(".contact-content");
+
+            gsap.to(homeContent, {
+                x: '0',
+                duration: 1,
+                ease: "ease-in-out"
+            });
+        },
+        slideThirdContentToRight: function () {
+            const homeContent = $(".contact-content");
+
+            gsap.to(homeContent, {
+                x: '100vw',
                 duration: 1,
                 ease: "ease-in-out"
             });
@@ -208,24 +254,34 @@ export default {
         changePageContent: function (current_page_number, previous_page_number) {
             switch (current_page_number) {
                 case 0:
+                    this.loadHome();
                     if (previous_page_number != 0) {
                         this.changePaginations("right");
                         this.slideFirstContentToRight();
-                    } 
+                        this.slideSecondContentToRight();
+                        this.slideThirdContentToRight();
+                    }
                     break;
                 case 1:
+                    this.loadProjects();
                     if (previous_page_number == 0) {
                         this.changePaginations("left");
                         this.slideFirstContentToLeft();
+                        this.slideSecondContentToLeft();
                         
                     } else if (previous_page_number == 2) {
                         this.changePaginations("right");
+                        this.slideSecondContentToRight(true);
+                        this.slideThirdContentToRight();
                     }
                     break;
                 case 2:
+                    this.loadContact();
                     if (previous_page_number == 0 || previous_page_number == 1) {
                         this.changePaginations("left");
                         this.slideFirstContentToLeft();
+                        this.slideSecondContentToLeft(true);
+                        this.slideThirdContentToLeft();
                     }
                     break;
             }
@@ -245,6 +301,16 @@ export default {
                     this.previousScroll++;
                 }, 1)
             }
+        },
+        loadProjects: function () {
+            this.setText("Projetos.", "", "Web: código e design. HTML, CSS, JavaScript. Frameworks e libs.");
+        },
+        loadHome: function () {
+            this.restoreMenu();
+            this.setText("Olá.", "", "Desenvolvedor full stack e web designer");
+        },
+        loadContact: function () {
+            this.setText("Contato.", "", "Saiba como me encontrar. Ouse me chamar");
         },
         changeMenu: function (event) {
             this.pageScroll = event;
@@ -471,7 +537,9 @@ export default {
         modal,
         responsiveHabilitiesComponent,
         habilitiesComponent,
-        footerComponent
+        footerComponent,
+        projectsComponent,
+        contactComponent
     }
 }
 </script>
@@ -489,6 +557,7 @@ export default {
     top: 0;
     bottom: 0;
     margin: auto;
+    z-index: 999;
 }
 
 .pagination-left {
@@ -505,8 +574,8 @@ export default {
 
 .presentation-circle {
     margin: auto;
-    height: fit-content;
-    width: fit-content;
+    width: calc(14rem + 28vw);
+    height: calc(14rem + 28vw);
     position: absolute;
     left: 0;
     right: 0;
@@ -516,6 +585,23 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+@media (max-width: 1050px) {
+    .tech-circle-container {
+        width: calc(10rem + 18vw);
+        height: calc(10rem + 18vw);
+    }
+}
+
+.home-content, .projects-content, .contact-content {
+    position: absolute;
+    z-index: 6;
+}
+
+.projects-content, .contact-content {
+    transform: translateX(103vw);
+    right: 0;
 }
 
 .home-button {
@@ -620,7 +706,7 @@ export default {
     }
 
     .main-text {
-        left: -55%;
+        left: -17%;
     }
 
     .main-text p {
