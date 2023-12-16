@@ -3,7 +3,7 @@
         <div class="home-button" v-on:click="restoreMenu()">
             <img src="../assets/img/rabsystems-icon.png">
         </div>
-        <div class="pagination-left">
+        <div class="pagination-left" v-on:click="backScroll()">
             <techMoon />
         </div>
         <div class="presentation-circle">
@@ -38,10 +38,10 @@
             </div>
             <audioManager />
         </div>
-        <div class="pagination-right">
+        <div class="pagination-right" v-on:click="advanceScroll()">
             <techMoon />
         </div>
-        <footerComponent @changeMenu="changePageContent($event)" />
+        <footerComponent @changeMenu="changeMenu($event)" :menuselected="pageScroll" />
         <modal v-if="showModal" :modaltitle="modalTitle" :modaltext="modalText" :modalicon="modalIcon" :modalclosebutton="modalCloseButton" :withanimation="withAnimation" @saveModal="initiateFullScreen($event)" @closeModal="hideModal()">
             <responsiveHabilitiesComponent :type="habilities" v-if="!withAnimation" />
         </modal>
@@ -65,12 +65,192 @@ export default {
     mixins: [globalMethods],
     data() {
         return {
-            habilities: ""
+            habilities: "",
+            pageScroll: 0,
+            previousScroll: 0
+        }
+    },
+    watch: {
+        pageScroll: function () {
+            this.changePageContent(this.pageScroll, this.previousScroll);
         }
     },
     methods: {
-        changePageContent: function (event) {
-            console.log(event);  
+        checkPaginations: function () {
+            if (this.pageScroll == 0) {
+                $(".pagination-left").addClass("pagination-disabled");
+            } else if (this.pageScroll == 2) {
+                $(".pagination-right").addClass("pagination-disabled");
+            }
+        },
+        changePaginations: function (direction) {
+            const paginationLeft = $(".pagination-left");
+            const paginationRight = $(".pagination-right");
+            const paginations = $(".pagination-right, .pagination-left");
+
+            if (direction == "left") {
+
+                gsap.to(paginations, {
+                    x: '-102vw',
+                    rotate: 360,
+                    duration: 1,
+                    ease: "ease-in-out"
+                });
+
+                setTimeout(() => {
+                    paginationLeft.css("opacity", 0);
+
+                    gsap.to(paginationLeft, {
+                        x: '0',
+                        duration: 0.31,
+                        onComplete: function () {
+                            gsap.set(paginationLeft, { x: 0 });
+
+                            gsap.to(paginations, {
+                                rotate: 0,
+                                duration: 0.9
+                            });
+                        }
+                    });
+
+                    setTimeout(() => {
+                        paginationLeft.css("opacity", 1);
+                        paginationRight.css("opacity", 0);
+
+                        paginations.removeClass("pagination-disabled");
+
+                        gsap.to(paginationRight, {
+                            x: '10vw',
+                            duration: 0.1
+                        });
+
+                        setTimeout(() => {
+                            paginationRight.css("opacity", 1);
+
+                            this.checkPaginations();
+
+                            gsap.to(paginationRight, {
+                                x: '0',
+                                duration: 0.9,
+                                ease: "ease-in-out"
+                            });
+                        }, 100)
+                    }, 310)
+                }, 800)
+            } else if (direction == "right") {
+                gsap.to(paginations, {
+                    x: '102vw',
+                    rotate: -360,
+                    duration: 1,
+                    ease: "ease-in-out"
+                });
+
+                setTimeout(() => {
+                    paginationRight.css("opacity", 0);
+                    
+                    gsap.to(paginationRight, {
+                        x: '0',
+                        duration: 0.31,
+                        onComplete: function () {
+                            gsap.set(paginationRight, { x: "0" });
+
+                            gsap.to(paginations, {
+                                rotate: 0,
+                                duration: 0.5
+                            });
+                        }
+                    });
+
+                    setTimeout(() => {
+                        paginationRight.css("opacity", 1);
+                        paginationLeft.css("opacity", 0);
+
+                        paginations.removeClass("pagination-disabled");
+
+                        gsap.to(paginationLeft, {
+                            x: '-10vw',
+                            duration: 0.1
+                        });
+
+                        setTimeout(() => {
+                            paginationLeft.css("opacity", 1);
+
+                            this.checkPaginations();
+
+                            gsap.to(paginationLeft, {
+                                x: '0',
+                                duration: 0.5,
+                                ease: "ease-in-out"
+                            });
+                        }, 100)
+                    }, 310)
+                }, 800)
+            }
+        },
+        slideFirstContentToLeft: function () {
+            const presentationCircle = $(".presentation-circle");
+
+            gsap.to(presentationCircle, {
+                x: '-100vw',
+                duration: 1,
+                ease: "ease-in-out"
+            });
+        },
+        slideFirstContentToRight: function () {
+            const presentationCircle = $(".presentation-circle");
+
+            gsap.to(presentationCircle, {
+                x: '0',
+                duration: 1,
+                ease: "ease-in-out"
+            });
+        },
+        changePageContent: function (current_page_number, previous_page_number) {
+            switch (current_page_number) {
+                case 0:
+                    if (previous_page_number != 0) {
+                        this.changePaginations("right");
+                        this.slideFirstContentToRight();
+                    } 
+                    break;
+                case 1:
+                    if (previous_page_number == 0) {
+                        this.changePaginations("left");
+                        this.slideFirstContentToLeft();
+                        
+                    } else if (previous_page_number == 2) {
+                        this.changePaginations("right");
+                    }
+                    break;
+                case 2:
+                    if (previous_page_number == 0 || previous_page_number == 1) {
+                        this.changePaginations("left");
+                        this.slideFirstContentToLeft();
+                    }
+                    break;
+            }
+        },
+        backScroll: function () {
+            if (this.pageScroll != 0) {
+                this.pageScroll--;
+                setTimeout(() => {
+                    this.previousScroll--;
+                }, 1)
+            }
+        },
+        advanceScroll: function () {
+            if (this.pageScroll < 2) {
+                this.pageScroll++;
+                setTimeout(() => {
+                    this.previousScroll++;
+                }, 1)
+            }
+        },
+        changeMenu: function (event) {
+            this.pageScroll = event;
+            setTimeout(() => {
+                this.previousScroll = event;
+            }, 1)
         },
         selectMenu: function (index) {
             $(".menu-texts .text").removeClass("selected");
@@ -276,6 +456,7 @@ export default {
         });
 
         this.initEventListeners();
+        this.checkPaginations();
     },
     components: {
         techCircle,
@@ -310,6 +491,10 @@ export default {
 
 .pagination-right {
     right: calc(-5rem - 11vw);
+}
+
+.pagination-disabled {
+    opacity: 0.5 !important;
 }
 
 .presentation-circle {
@@ -392,7 +577,7 @@ export default {
 
     .menu-texts .text {
         margin: 2rem 0;
-        width: 90px;
+        width: 104px;
         height: 24px;
         cursor: pointer;
         transition: transform 0.4s ease-in-out;

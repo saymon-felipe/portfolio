@@ -116,8 +116,16 @@ export default {
             }
         })
 
-        $(".pagination-left .circle-content, .pagination-right .circle-content").on("click", () => {
-            this.playAudio("switch-audio");
+        $(".pagination-left .circle-content").on("click", () => {
+            if (!$(".pagination-left").hasClass("pagination-disabled")) {
+                this.playAudio("switch-audio");
+            }
+        })
+
+        $(".pagination-right .circle-content").on("click", () => {
+            if (!$(".pagination-right").hasClass("pagination-disabled")) {
+                this.playAudio("switch-audio");
+            }
         })
     }
 }

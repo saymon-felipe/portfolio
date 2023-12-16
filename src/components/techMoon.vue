@@ -107,6 +107,12 @@ export default {
         height: calc(4.4rem + 9vw);
     }
 
+    .pagination-disabled .inner-circle:hover {
+        width: calc(4rem + 9vw) !important;
+        height: calc(4rem + 9vw) !important;
+        cursor: default !important;
+    }
+
     .inner-circle img {
         width: 95%;
         pointer-events: none;
@@ -130,6 +136,12 @@ export default {
         .inner-circle:hover {
             width: calc(3.4rem + 8vw);
             height: calc(3.4rem + 8vw);
+        }
+
+        .pagination-disabled .inner-circle:hover {
+            width: calc(4rem + 9vw) !important;
+            height: calc(4rem + 9vw) !important;
+            cursor: default !important;
         }
 }
 

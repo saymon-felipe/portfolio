@@ -158,10 +158,11 @@ export const globalMethods = {
             return false;
         },
         handleFullscreenChange: function () {
+            if (!this.isMobileDevice()) return;
+
             if (!this.checkIfIsFullScreen()) {
                 this.requestFullScreen();
             } else {
-                console.log(this.checkIfDeviceIsInPortraitMode())
                 if (this.checkIfDeviceIsInPortraitMode()) {
                     this.fillModalVariables("Vire o dispositivo", "Por favor gire seu celular para ficar em modo paisagem", "", false, true);
                 } else {
