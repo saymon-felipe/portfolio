@@ -12,6 +12,9 @@
         <div class="slot-container">
             <slot></slot>
         </div>
+        <div class="modal-image">
+            <img :src="modalimageurl">
+        </div>
     </div>
 </template>
 <script>
@@ -22,7 +25,7 @@ import $ from 'jquery';
 export default {
     name: "modalComponent",
     mixins: [globalMethods],
-    props: ["modaltitle", "modaltext", "modalicon", "modalclosebutton", "withanimation"],
+    props: ["modaltitle", "modaltext", "modalicon", "modalclosebutton", "withanimation", "modalimageurl"],
     methods: {
         submitModal: function () {
             this.$emit("saveModal", true);
@@ -36,15 +39,20 @@ export default {
         this.typeText("modal-text");
 
         const player = document.querySelector("#rotate-phone");
-        player.addEventListener("rendered", () => {
-            player.load(
-                rotatePhoneJson
-            );
 
-            if (this.withanimation) {
-                $(".animation-container").css("display", "flex");
-            }
-        });
+        console.log(player)
+
+        if (player) {
+            player.addEventListener("rendered", () => {
+                player.load(
+                    rotatePhoneJson
+                );
+
+                if (this.withanimation && this.modalimageurl == "") {
+                    $(".animation-container").css("display", "flex");
+                }
+            });
+        }
 
         if ($("#fullscreen-icon").hasClass("fas")) {
             $(".slot-container").hide();

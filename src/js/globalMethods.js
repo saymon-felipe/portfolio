@@ -97,7 +97,7 @@ export const globalMethods = {
             });
         },
         //Funções modal
-        fillModalVariables: function (main_text, complementary_text, modal_icon, allow_close = false, with_animation = false) {
+        fillModalVariables: function (main_text, complementary_text, modal_icon, allow_close = false, with_animation = false, image_url = "") {
             this.hideModal().then(() => {
                 this.showModal = true;
                 this.modalCloseButton = allow_close;
@@ -105,6 +105,7 @@ export const globalMethods = {
                 this.modalText = complementary_text;
                 this.modalIcon = modal_icon;
                 this.withAnimation = with_animation;
+                this.modalImageUrl = image_url;
             });
         },
         hideModal: function () {
@@ -116,6 +117,7 @@ export const globalMethods = {
                     this.modalText = "";
                     this.modalIcon = "";
                     this.withAnimation = false;
+                    this.modalImageUrl = "";
                     resolve();
                 }, 100)
             })
@@ -201,6 +203,21 @@ export const globalMethods = {
             });
         }
     },
+    watch: {
+        showModal: function () {
+            setTimeout(() => {
+                if (this.showModal) {
+                    let modal = $(".modal");
+                    let modalPosition = modal.position();
+
+                    let calculatedX = modalPosition.left;
+                    let calculatedY = modalPosition.top;
+                    
+                    modal.css("transform", `translateX(-${calculatedX}px, -${calculatedY}px)`);
+                }
+            }, 1)
+        }
+    },
     mounted: function() {
     },
     data() {
@@ -210,7 +227,8 @@ export const globalMethods = {
             modalText: "",
             modalIcon: "",
             modalCloseButton: false,
-            withAnimation: false
+            withAnimation: false,
+            modalImageUrl: ""
         }
     }
 }

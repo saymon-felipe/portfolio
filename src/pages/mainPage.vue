@@ -50,7 +50,7 @@
             <techMoon />
         </div>
         <footerComponent @changeMenu="changeMenu($event)" :menuselected="pageScroll" />
-        <modal v-if="showModal" :modaltitle="modalTitle" :modaltext="modalText" :modalicon="modalIcon" :modalclosebutton="modalCloseButton" :withanimation="withAnimation" @saveModal="initiateFullScreen($event)" @closeModal="hideModal()">
+        <modal datatransformdiv=".portfolio-main-page" v-if="showModal" :modaltitle="modalTitle" :modaltext="modalText" :modalicon="modalIcon" :modalclosebutton="modalCloseButton" :withanimation="withAnimation" :modalimageurl="modalImageUrl" @saveModal="initiateFullScreen($event)" @closeModal="hideModal()">
             <responsiveHabilitiesComponent :type="habilities" v-if="!withAnimation" />
         </modal>
     </div>
@@ -83,6 +83,9 @@ export default {
     watch: {
         pageScroll: function () {
             this.changePageContent(this.pageScroll, this.previousScroll);
+        },
+        "$root.showModal": function () {
+            console.log(this.$root.showModal)
         }
     },
     methods: {
@@ -199,8 +202,15 @@ export default {
         },
         slideFirstContentToLeft: function () {
             const homeContent = $(".home-content");
+            const homeButton = $(".home-button");
 
             gsap.to(homeContent, {
+                x: '-100vw',
+                duration: 1,
+                ease: "ease-in-out"
+            });
+
+            gsap.to(homeButton, {
                 x: '-100vw',
                 duration: 1,
                 ease: "ease-in-out"
@@ -208,8 +218,15 @@ export default {
         },
         slideFirstContentToRight: function () {
             const homeContent = $(".home-content");
+            const homeButton = $(".home-button");
 
             gsap.to(homeContent, {
+                x: '0',
+                duration: 1,
+                ease: "ease-in-out"
+            });
+
+            gsap.to(homeButton, {
                 x: '0',
                 duration: 1,
                 ease: "ease-in-out"
@@ -219,7 +236,7 @@ export default {
             const homeContent = $(".projects-content");
 
             gsap.to(homeContent, {
-                x: moreLeft ? '-100vw' : '0',
+                x: moreLeft ? '-100vw' : '9vw',
                 duration: 1,
                 ease: "ease-in-out"
             });
@@ -228,7 +245,7 @@ export default {
             const homeContent = $(".projects-content");
 
             gsap.to(homeContent, {
-                x: zeroPosition ? 0 : '100vw',
+                x: zeroPosition ? '9vw' : '100vw',
                 duration: 1,
                 ease: "ease-in-out"
             });
@@ -237,7 +254,7 @@ export default {
             const homeContent = $(".contact-content");
 
             gsap.to(homeContent, {
-                x: '0',
+                x: '9vw',
                 duration: 1,
                 ease: "ease-in-out"
             });
