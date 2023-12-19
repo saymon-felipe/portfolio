@@ -213,7 +213,7 @@ export const globalMethods = {
                     let calculatedX = modalPosition.left;
                     let calculatedY = modalPosition.top;
                     
-                    modal.css("transform", `translateX(-${calculatedX}px, -${calculatedY}px)`);
+                    modal.css("transform", `translate(-${calculatedX}px, -${calculatedY}px)`);
                 }
             }, 1)
         }

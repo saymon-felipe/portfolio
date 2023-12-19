@@ -50,7 +50,7 @@
             <techMoon />
         </div>
         <footerComponent @changeMenu="changeMenu($event)" :menuselected="pageScroll" />
-        <modal datatransformdiv=".portfolio-main-page" v-if="showModal" :modaltitle="modalTitle" :modaltext="modalText" :modalicon="modalIcon" :modalclosebutton="modalCloseButton" :withanimation="withAnimation" :modalimageurl="modalImageUrl" @saveModal="initiateFullScreen($event)" @closeModal="hideModal()">
+        <modal v-if="showModal" :modaltitle="modalTitle" :modaltext="modalText" :modalicon="modalIcon" :modalclosebutton="modalCloseButton" :withanimation="withAnimation" :modalimageurl="modalImageUrl" @saveModal="initiateFullScreen($event)" @closeModal="hideModal()">
             <responsiveHabilitiesComponent :type="habilities" v-if="!withAnimation" />
         </modal>
     </div>
@@ -83,9 +83,6 @@ export default {
     watch: {
         pageScroll: function () {
             this.changePageContent(this.pageScroll, this.previousScroll);
-        },
-        "$root.showModal": function () {
-            console.log(this.$root.showModal)
         }
     },
     methods: {
@@ -619,6 +616,7 @@ export default {
 .projects-content, .contact-content {
     transform: translateX(103vw);
     right: 0;
+    z-index: 9999;
 }
 
 .home-button {

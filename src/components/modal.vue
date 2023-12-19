@@ -12,7 +12,7 @@
         <div class="slot-container">
             <slot></slot>
         </div>
-        <div class="modal-image">
+        <div class="modal-image" v-if="modalimageurl != ''">
             <img :src="modalimageurl">
         </div>
     </div>
@@ -39,8 +39,6 @@ export default {
         this.typeText("modal-text");
 
         const player = document.querySelector("#rotate-phone");
-
-        console.log(player)
 
         if (player) {
             player.addEventListener("rendered", () => {
@@ -72,7 +70,7 @@ export default {
     left: 0;
     display: flex;
     flex-direction: column;
-    z-index: 999;
+    z-index: 9999;
     padding: 2em;
     display: flex;
     flex-direction: column;
@@ -94,11 +92,24 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
+    display: flex;
+    flex-direction: column;
 }
 
     .modal lottie-player {
         width: 10rem;
         height: fit-content;
+    }
+
+    .modal img {
+        width: 100%;
+        height: 86%;
+        object-fit: contain;
+        flex: 1;
+        border-radius: 20px;
+        margin-top: 1rem;
+        border: 2px solid var(--gray-high);
+        background-color: var(--black);
     }
 
 .animation-container {

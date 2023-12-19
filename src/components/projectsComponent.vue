@@ -2,8 +2,8 @@
     <div class="projects-component">
         <div class="projects-container">
             <div class="projects-internal">
-                <div class="project" v-for="(project, index) in projects" :key="index">
-                    <img :src="project.url" :alt="project.title" v-on:click="showOptions(project.link, project.url)">
+                <div class="project" v-for="(project, index) in projects" :key="index" v-on:click="showOptions(project.link, project.url, project.title)">
+                    <img :src="project.url" :alt="project.title">
                     <div class="project-details">
                         <h2 :title="project.title">{{ project.title }}</h2>
                         <p :title="project.description">{{ project.description }}</p>
@@ -11,7 +11,7 @@
                 </div>
             </div>
             <div class="options-container">
-                <div class="option" v-on:click="sendToLink()">
+                <div class="option" v-on:click="sendToLink()" :class="currentSendLink == '' ? 'disabled' : ''">
                     <i class="fas fa-external-link-alt"></i>
                 </div>
                 <div class="option" v-on:click="openShowModal()">
@@ -19,7 +19,7 @@
                 </div>
             </div>
         </div>
-        <modal datatransformdiv=".projects-content" v-if="showModal" :modaltitle="modalTitle" :modaltext="modalText" :modalicon="modalIcon" :modalclosebutton="modalCloseButton" :withanimation="withAnimation" :modalimageurl="modalImageUrl" @closeModal="hideModal()"></modal>
+        <modal v-if="showModal" :modaltitle="modalTitle" :modaltext="modalText" :modalicon="modalIcon" :modalclosebutton="modalCloseButton" :withanimation="withAnimation" :modalimageurl="modalImageUrl" @closeModal="hideModal()"></modal>
     </div>
 </template>
 <script>
@@ -83,17 +83,20 @@ export default {
                 }
             ],
             currentSendLink: "",
-            currentImage: ""
+            currentImage: "",
+            currentTitle: ""
         }
     },
     methods: {
         sendToLink: function () {
+            if (this.currentSendLink == "") return;
+
             window.open(this.currentSendLink, "_blank");
         },
         openShowModal: function () {
-            this.fillModalVariables("", "", "", true, true, this.currentImage);
+            this.fillModalVariables(this.currentTitle, "", "", true, true, this.currentImage);
         },
-        showOptions: function (external_link, image) {
+        showOptions: function (external_link, image, title) {
             let optionsContainer = $(".options-container");
 
             optionsContainer.removeClass("show");
@@ -104,6 +107,7 @@ export default {
 
             this.currentSendLink = external_link;
             this.currentImage = image;
+            this.currentTitle = title;
         },
         monitorateScroll: function () {
             let self = this;
@@ -215,6 +219,11 @@ export default {
     opacity: 1;
 }
 
+.disabled, .disabled i {
+    cursor: default !important;
+    opacity: 0.6;
+}
+
 .projects-internal {
     height: 85vh;
     overflow-x: hidden;
@@ -281,7 +290,8 @@ export default {
     left: 0;
     bottom: 0;
     width: 100%;
-    height: fit-content;
+    height: 20%;
+    max-height: 100px;
     z-index: 999;
     background-image: linear-gradient(transparent, var(--black));
     padding: 1rem;
