@@ -19,6 +19,7 @@
                 </div>
             </div>
         </div>
+        <div class="options-container-wrapper" v-if="this.currentImage != ''" v-on:click="hideOptions()"></div>
         <modal v-if="showModal" :modaltitle="modalTitle" :modaltext="modalText" :modalicon="modalIcon" :modalclosebutton="modalCloseButton" :withanimation="withAnimation" :modalimageurl="modalImageUrl" @closeModal="hideModal()"></modal>
     </div>
 </template>
@@ -96,11 +97,22 @@ export default {
         openShowModal: function () {
             this.fillModalVariables(this.currentTitle, "", "", true, true, this.currentImage);
         },
-        showOptions: function (external_link, image, title) {
+        hideOptions: function (event) {
+            console.log(event)
+
             let optionsContainer = $(".options-container");
 
             optionsContainer.removeClass("show");
 
+            this.currentSendLink = "";
+            this.currentImage = "";
+            this.currentTitle = "";
+        },
+        showOptions: function (external_link, image, title) {
+            let optionsContainer = $(".options-container");
+
+            optionsContainer.removeClass("show");
+            
             setTimeout(() => {
                 optionsContainer.addClass("show");
             }, 400)
@@ -108,6 +120,22 @@ export default {
             this.currentSendLink = external_link;
             this.currentImage = image;
             this.currentTitle = title;
+
+            setTimeout(() => {
+                this.translateOptionsWrapper();
+            }, 1)
+        },
+        translateOptionsWrapper: function () {
+            let wrapper = $(".options-container-wrapper");
+            
+            if (wrapper.css("transform") != "none" && wrapper.css("transform") != undefined) return;
+
+            let wrapperPosition = wrapper.position();
+
+            let calculatedX = wrapperPosition.left;
+            let calculatedY = wrapperPosition.top;
+            
+            wrapper.css("transform", `translate(-${calculatedX}px, -${calculatedY}px)`);
         },
         monitorateScroll: function () {
             let self = this;
@@ -172,6 +200,15 @@ export default {
 </script>
 <style scoped>
 
+.options-container-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 6;
+}
+
 .project {
     width: calc(10rem + 20vw);
     overflow: hidden;
@@ -234,6 +271,7 @@ export default {
     position: relative;
     transform: translateY(-5vh);
     overflow: hidden;
+    z-index: 7;
 }
 
 .projects-container::before, .projects-container::after {
@@ -299,7 +337,7 @@ export default {
     align-items: center;
     justify-content: center;
     transition: transform 0.4s;
-    transform: translateY(4em);
+    transform: translateY(5em);
 }
 
     .options-container i {
