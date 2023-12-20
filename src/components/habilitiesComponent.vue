@@ -54,18 +54,19 @@ export default {
 }
 
 .habilities {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-    gap: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1em;
+    justify-content: space-evenly;
     align-items: center;
     width: 100%;
     height: 100%;
-    padding: 1.5rem;
-    transform: scale(0.8);
+    padding: 1.5rem 0;
+    align-content: center;
 }
 
     .habilities img {
-        width: 200px;
+        width: 6em;
         max-width: 100%;
         object-fit: contain;
         display: block;
