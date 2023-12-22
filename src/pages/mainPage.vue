@@ -532,8 +532,6 @@ export default {
         }
     },
     mounted: function () {
-        this.typeText("principal-text");
-
         const player = document.querySelector("#click");
         player.addEventListener("rendered", () => {
             player.load(

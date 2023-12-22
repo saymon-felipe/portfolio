@@ -20,9 +20,11 @@ import '@lottiefiles/lottie-player';
 import $ from 'jquery';
 import './css/rabsystemsTelInput.css';
 import './js/rabsystemsTelInput.js';
+import { globalMethods } from "./js/globalMethods.js";
 
 export default {
   name: 'App',
+  mixins: [globalMethods],
   data() {
     return {
       loading: true
@@ -37,6 +39,7 @@ export default {
   },
   methods: {
     initApp: function () {
+      let self = this;
       let loading = $(".loading");
       let content = $(".content");
 
@@ -48,6 +51,7 @@ export default {
 
         setTimeout(() => {
           content.css("opacity", 1);
+          self.typeText("principal-text");
         }, 1)
       }, 400)
     }
