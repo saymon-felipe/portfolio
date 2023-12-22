@@ -201,6 +201,17 @@ export const globalMethods = {
             document.addEventListener("msfullscreenchange", () => {
                 this.handleFullscreenChange();
             });
+        },
+        //Funções de manipulação de objetos
+        getTelInputValue: function() { // Pega o valor do input removendo caracteres especiais e espaço para submit do formulário.
+            let ddi = $(".current-flag-container .flag-item").attr("ddi");
+            let number = $("#tel-input").val().replace("(", "").replace(")", "").replace("-", "").replace(" ", '').replace(" ", '');
+
+            if (number == "") {
+                return;
+            }
+
+            return `${ddi}${number}`;
         }
     },
     watch: {

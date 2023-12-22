@@ -2,10 +2,14 @@
 
 :root {
     --gray-high: #DDDDDF;
+    --gray: #bbbbbb;
     --blue: rgb(3, 199, 254);
+    --blue-low: rgb(2, 158, 201);
     --white: #FFFAFF;
     --black: #0D0D0D;
     --gray-low: #121212;
+    --green: #00dd12;
+    --red: #ff1414;
 }
 
 * {
@@ -72,6 +76,12 @@ html, body {
 body {
     background-image: linear-gradient(to bottom right, var(--black), var(--gray-low));
     position: relative;
+    caret-color: var(--gray-high);
+}
+
+::selection {
+    background: rgba(3, 199, 254, 0.5);
+    color: var(--white);
 }
 
 .home-button, .close-button {
@@ -88,4 +98,99 @@ body {
     right: 0;
     margin: auto;
     top: 4vh;
+}
+
+input, textarea {
+    width: 100% !important;
+    border-radius: 20px !important;
+    background: transparent !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    padding: 1em !important;
+    color: var(--gray-high) !important;
+    resize: none !important;
+}
+
+.rabsystems-input input {
+    padding: .3rem .5rem .3rem 3.5rem !important;
+}
+
+.rabsystems-input {
+    width: 100% !important;
+}
+
+.form-group {
+    margin: 1rem 0;
+}
+
+.form-group.divide input {
+    margin: .5rem 0;
+}
+
+.form-group.divide input:last-child {
+    margin-bottom: 0;
+}
+
+@media (max-width: 1050px) {
+    .form-group.divide {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    
+        .form-group.divide input {
+            width: 48.5% !important;
+            margin: 0;
+        }
+}
+
+.btn {
+    border-radius: 30px;
+    border: 1px solid var(--gray-high);
+    color: var(--gray-high);
+    padding: .8rem 2rem;
+    background: transparent;
+    cursor: pointer;
+    transition: background 0.4s, color 0.4s;
+    font-weight: 600;
+}
+
+    .btn:hover {
+        background: var(--gray-high);
+        color: var(--black);
+    }
+
+    .btn:active {
+        background: var(--gray);
+    }
+
+.btn-primary {
+    border-color: var(--blue);
+    color: var(--blue);
+}
+
+    .btn-primary:hover {
+        background: var(--blue);
+        color: var(--white);
+    }
+
+    .btn-primary:active {
+        background: var(--blue-low);
+    }
+
+.form-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.response {
+    text-align: center;
+}
+
+.success {
+    color: var(--green);
+}
+
+.error {
+    color: var(--red);
 }

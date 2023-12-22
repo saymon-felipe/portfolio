@@ -18,6 +18,8 @@ import './assets/fontawesome/css/fontawesome.css';
 import 'animate.css';
 import '@lottiefiles/lottie-player';
 import $ from 'jquery';
+import './css/rabsystemsTelInput.css';
+import './js/rabsystemsTelInput.js';
 
 export default {
   name: 'App',
