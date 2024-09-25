@@ -34,14 +34,50 @@ export default {
     data() {
         return {
             projects: [
-                {
-                    url: require("../assets/img/projects/cademint-thumb.png"),
-                    title: "Cademint - Organize. Colabore. Conquiste.",
-                    description: "Site comercial para apresentação do produto Cademint, que é um sistema de gerenciamento de tarefas.",
-                    link: "https://cademint.netlify.app"
+            {
+                    url: "https://rabsystems-storage.s3.sa-east-1.amazonaws.com/cda-thumb.png",
+                    title: "CDA Esports - Onde nascem lendas.",
+                    description: "Site comercial para apresentação do produto Cademint, que é um sistema de gerenciamento de tarefas. (Em construção)",
+                    link: ""
                 },
                 {
-                    url: require("../assets/img/projects/gourmetech-thumb.jpg"),
+                    url: "https://rabsystems-storage.s3.sa-east-1.amazonaws.com/portal-aluno-thumb.png",
+                    title: "Portal do aluno - Solutto ERP",
+                    description: "E-commerce especializado em material didático. (Em lançamento)",
+                    link: ""
+                },
+                {
+                    url: "https://rabsystems-storage.s3.sa-east-1.amazonaws.com/portal-aluno-2-thumb.png",
+                    title: "Carrinho de compras - Solutto ERP",
+                    description: "Carrinho de compras do e-commerce. (Em lançamento)",
+                    link: ""
+                },
+                {
+                    url: require("../assets/img/projects/mokaly-thumb.png"),
+                    title: "Mokaly",
+                    description: "Site comercial para apresentação do produto Mokaly, uma ferramenta de integração de equipes distribuídas.",
+                    link: "https://www.mokaly.com"
+                },
+                {
+                    url: require("../assets/img/projects/solutto-thumb.png"),
+                    title: "Solutto - ERP para franquias",
+                    description: "Site comercial para apresentação do produto Solutto, um sistema de ERP para franquias.",
+                    link: "https://www.solutto.com.br"
+                },
+                {
+                    url: "https://rabsystems-storage.s3.sa-east-1.amazonaws.com/sistema-mokaly-thumb.png",
+                    title: "Mokaly (Sistema)",
+                    description: "Sistema interno do produto Mokaly, uma ferramenta de integração de equipes distribuídas.",
+                    link: "https://app.mokaly.com"
+                },
+                {
+                    url: "https://rabsystems-storage.s3.sa-east-1.amazonaws.com/sistema-solutto-thumb.png",
+                    title: "Solutto - ERP para franquias (Sistema)",
+                    description: "Sistema interno e modular do Solutto, ERP para franquias.",
+                    link: "https://sistema.solutto.com.br"
+                },
+                {
+                    url: "https://rabsystems-storage.s3.sa-east-1.amazonaws.com/gourmetech-thumb.jpg",
                     title: "Gourmetech - ERP para restaurantes",
                     description: "Gourmetech é um sistema totalmente modular construído para impulsionar a gestão de restaurantes. (Em construção)",
                     link: ""
@@ -69,18 +105,6 @@ export default {
                     title: "Chatnet",
                     description: "App para comunicação entre usuários que funciona sem a necessidade de estar conectado à internet. (Em construção)",
                     link: ""
-                },
-                {
-                    url: require("../assets/img/projects/mokaly-thumb.png"),
-                    title: "Mokaly",
-                    description: "Site comercial para apresentação do produto Mokaly, uma ferramenta de integração de equipes distribuídas.",
-                    link: "https://www.mokaly.com"
-                },
-                {
-                    url: require("../assets/img/projects/solutto-thumb.png"),
-                    title: "Solutto - ERP para franquias",
-                    description: "Site comercial para apresentação do produto Solutto, um sistema de ERP para franquias.",
-                    link: "https://www.solutto.com.br"
                 }
             ],
             currentSendLink: "",
@@ -219,7 +243,9 @@ export default {
 }
 
     .project img {
-        width: 100%;
+        aspect-ratio: 16 / 9;
+        max-width: 100%;
+        object-fit: cover;
         border-radius: 10px;
     }
 

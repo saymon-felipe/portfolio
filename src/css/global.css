@@ -58,7 +58,7 @@ p, a {
         margin-bottom: .3rem;
     }
     
-    h2 {
+    h2, * {
         font-size: 1em;
     }
 

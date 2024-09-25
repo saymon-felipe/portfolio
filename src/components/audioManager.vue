@@ -139,7 +139,19 @@ export default {
     position: absolute;
     right: 0;
     bottom: 0;
+    z-index: 7;
+}
 
+@media (max-height: 735px) {
+    .audio-manager {
+        bottom: 7vh;
+    }
+}
+
+@media (max-height: 598px) {
+    .audio-manager {
+        bottom: 12vh;
+    }
 }
 
 .audio-buttons {

@@ -57,6 +57,7 @@ footer {
     bottom: 0;
     left: 0;
     padding: 2rem;
+    z-index: 6;
 }
 
 .navigation-menu ul {

@@ -363,12 +363,6 @@ export default {
                         break;
                 }
 
-                if (this.isMobileDevice()) {
-                    this.hideClickAnimation().then(() => {
-                        this.showClickAnimation();
-                    });
-                }
-
                 this.rollMenuToTop();
             });
         },
@@ -498,7 +492,11 @@ export default {
                     stagger: 0.05
                 });
 
-                this.showClickAnimation();
+                if (this.isMobileDevice()) {
+                    this.hideClickAnimation().then(() => {
+                        this.showClickAnimation();
+                    });
+                }
             } else {
                 gsap.to(menu, {
                     x: '-7.8vw',
@@ -631,7 +629,7 @@ export default {
     right: 0;
     margin: auto;
     top: 4vh;
-    z-index: 6;
+    z-index: 9;
 }
 
 .main-text {
@@ -668,6 +666,11 @@ export default {
         top: 14px;
         margin: auto;
     }
+
+.menu-texts.selected-menu {
+    right: 0;
+    left: 0;
+}
 
 .menu-texts {
     height: fit-content;
@@ -765,6 +768,7 @@ export default {
     opacity: 0;
     display: none;
     cursor: pointer;
+    z-index: 9;
 }
 
 @media (max-width: 1050px) {
