@@ -77,7 +77,7 @@ export default {
                     link: "https://sistema.solutto.com.br"
                 },
                 {
-                    url: "https://rabsystems-storage.s3.sa-east-1.amazonaws.com/gourmetech-thumb.jpg",
+                    url: "https://rabsystems-storage.s3.sa-east-1.amazonaws.com/gourmetech.png",
                     title: "Gourmetech - ERP para restaurantes",
                     description: "Gourmetech é um sistema totalmente modular construído para impulsionar a gestão de restaurantes. (Em construção)",
                     link: ""
